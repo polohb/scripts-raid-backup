@@ -132,6 +132,6 @@ BWLIMIT='5000' # 5 MB/s
 SERVER=yourhost.com
 ```
 
-### Use it
+### Use the script
 
-You can simply run the script via a shell as root user : `bash rsync_encrypted_R1_DATA.sh`
+You can simply run the script via a shell as root user : `bash secure-remote-backup.sh`
