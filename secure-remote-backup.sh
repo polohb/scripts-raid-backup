@@ -9,34 +9,34 @@
 # Define some vars
 
 # Only users with $UID 0 have root privileges.
-ROOT_UID=0
+readonly ROOT_UID=0
 
 # Directory where encfs_config  and pwd files are stored
-CONFIG_FILES_DIR="/home/polohb"
+readonly CONFIG_FILES_DIR="/home/polohb"
 
 # encfs config file (this file is used to encryt and decrypt)
-ENCFS6_CONFIG=${CONFIG_FILES_DIR}/.encfs6.xml
+readonly ENCFS6_CONFIG=${CONFIG_FILES_DIR}/.encfs6.xml
 export ENCFS6_CONFIG
 
 # password file (used to encryt and decrypt with encfs file)
-PASSWORD_FILE=${CONFIG_FILES_DIR}/.pwd_encryt_bkp
+readonly PASSWORD_FILE=${CONFIG_FILES_DIR}/.pwd_encryt_bkp
 
 # Virtual encryted folder that match real folder (take no space)
-VIRTUAL_ENCRYPTED_FOLDER=/tmp/encryted_folder
+readonly VIRTUAL_ENCRYPTED_FOLDER=/tmp/encryted_folder
 
 # Upload bandwidth limit in KBytes per second
 # Do not put max upload connection to be able to do other things ;)
-BWLIMIT='5000' # 5 MB/s
+readonly BWLIMIT='5000' # 5 MB/s
 
 # Server address
-SERVER=yourhost.com
+readonly SERVER=yourhost.com
 
 
 # function fn_delete_virtual_encryted_folder
 # Try deleting VIRTUAL_ENCRYPTED_FOLDER when it is umount
 # no params
-function fn_delete_virtual_encryted_folder {
-if [ "$(ls -A $VIRTUAL_ENCRYPTED_FOLDER )" ]; then
+fn_delete_virtual_encryted_folder() {
+if [[ "$(ls -A $VIRTUAL_ENCRYPTED_FOLDER )" ]]; then
   echo ""
   echo "Encrypted folder ($VIRTUAL_ENCRYPTED_FOLDER) is not empty ..."
   echo "Bye"
@@ -50,7 +50,7 @@ fi
 
 # fuction fn_mount_encrypted_folder
 # $1 : source folder that will be encryted
-function fn_mount_encrypted_folder {
+fn_mount_encrypted_folder() {
   echo ""
   echo "Mount $1 as encrypted $VIRTUAL_ENCRYPTED_FOLDER"
   cat $PASSWORD_FILE | encfs -S --reverse $1 $VIRTUAL_ENCRYPTED_FOLDER
@@ -63,7 +63,7 @@ function fn_mount_encrypted_folder {
 
 # fuction fn_mount_encrypted_folder
 # Trying umount VIRTUAL_ENCRYPTED_FOLDER
-function fn_unmount_encrypted_folder {
+fn_unmount_encrypted_folder() {
   echo ""
   echo "Search if $VIRTUAL_ENCRYPTED_FOLDER is mounted..."
   mount | grep $VIRTUAL_ENCRYPTED_FOLDER
@@ -83,7 +83,7 @@ function fn_unmount_encrypted_folder {
 # fuction fn_rsync_folder
 # Backup encrypted_folder to server
 # $1 : encrypted dest folder on the server
-function fn_rsync_folder {
+fn_rsync_folder() {
   echo ""
   echo "Synch encryted folder to the sever ..."
   # The rsync .TEMP folder must exist on the destination !
@@ -94,35 +94,35 @@ function fn_rsync_folder {
 # fucntion fn_backup_folder
 # $1 : source folder to be backuped
 # $2 : dest folder (encryted and on the server)
-function fn_backup_folder {
+fn_backup_folder() {
   fn_mount_encrypted_folder $1
   fn_rsync_folder ${2}
   fn_unmount_encrypted_folder
 }
 
 
-function fn_check_env {
+fn_check_env() {
   # Run as root, of course.
-  if [ "$UID" -ne "$ROOT_UID" ]
+  if [[ "$UID" -ne "$ROOT_UID" ]]; then
   then
     echo "Need to be root to run this script."
     exit 1
   fi
 
   # Test encfs config exist
-  if  [ ! -f "$ENCFS6_CONFIG" ]; then
+  if  [[ ! -f "$ENCFS6_CONFIG" ]]; then
     echo "$ENCFS6_CONFIG does not exist or is not a valid file"
     exit 1
   fi
 
   # Test password file exist
-  if  [ ! -f "$PASSWORD_FILE" ]; then
     echo "$PASSWORD_FILE does not exist or is not a valid file"
+  if  [[ ! -f "$PASSWORD_FILE" ]]; then
     exit 1
   fi
 
   # Purge virtual directory if exists
-  if [ -d "$VIRTUAL_ENCRYPTED_FOLDER" ]; then
+  if [[ -d "$VIRTUAL_ENCRYPTED_FOLDER" ]; then
     unmount_encrypted_folder
   else
     mkdir $VIRTUAL_ENCRYPTED_FOLDER
@@ -131,16 +131,16 @@ function fn_check_env {
 }
 
 
-function fn_prepare_env {
+fn_prepare_env() {
   mkdir $VIRTUAL_ENCRYPTED_FOLDER
   encfs --reverse . $VIRTUAL_ENCRYPTED_FOLDER
 }
 
 
 
-function fn_main {
+main() {
 
-  if [ "$1" -nq "--prepare" ]; then
+  if [[ "$1" -nq "--prepare" ]]; then
 
     fn_prepare_env
 
@@ -162,4 +162,4 @@ function fn_main {
 }
 
 # Start :D
-fn_main
+main

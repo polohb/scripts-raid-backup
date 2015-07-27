@@ -10,18 +10,18 @@
 #
 
 # log file
-ERROR_FILE_PATH='./error.log'
+readonly ERROR_FILE_PATH='./error.log'
 
 # User email, diff synch will be send to this email
-MAIL=polohb@gmail.com
+readonly MAIL=polohb@gmail.com
 
 # Folder we want to sync
 # Remark : if end by / only the content of the folder is copied
 # else (no / at the end) the folder is copied (1 more lvl in dircetory tree)
-R1_SOURCE_FOLDER='/media/R1_DATA/'
+readonly R1_SOURCE_FOLDER='/media/R1_DATA/'
 
 # Destination folder (backuped data)
-R1_DEST_FOLDER='/media/R1_RSYNC'
+readonly R1_DEST_FOLDER='/media/R1_RSYNC'
 
 # Create a mirror folder
 # --delete-after : remove file in dest folder that are not in source folder
@@ -36,7 +36,7 @@ R1_DEST_FOLDER='/media/R1_RSYNC'
 #echo $OUTPUT | mail -s "$0 : run" $MAIL;
 
 # > $ERROR_FILE_PATH 2>&1 : concat error and standart output to error file
-rsync -av --delete-after $R1_SOURCE_FOLDER $R1_DEST_FOLDER > $ERROR_FILE_PATH 2>&1
+rsync -av --delete-after ${R1_SOURCE_FOLDER} ${R1_DEST_FOLDER} > ${ERROR_FILE_PATH} 2>&1
 
 # mail the log file to the $MAIL address
 cat $ERROR_FILE_PATH | mail -s "$0 : run results" $MAIL;
