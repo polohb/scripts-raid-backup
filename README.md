@@ -18,29 +18,29 @@ You should change some vars :
 
 - the mail address where log file will be sent
 ```
-MAIL=user@mail.com
+userMail=user@mail.com
 ```
 
 - the source folder (this is the folder we want to sync)
 
 ```
 # Should en with / (only the content of the folder will be copied)
-R1_SOURCE_FOLDER='/media/FOLDER_WE_WANT_TO_SYNC/'
+r1SourceFolder='/media/FOLDER_WE_WANT_TO_SYNC/'
 ```
 
 - the destination folder
 ```
-R1_DEST_FOLDER='/media/BACKUP_DATA_FOLDER'
+r1DestFolder='/media/BACKUP_DATA_FOLDER'
 ```
 
 ### Use the script
 
-You can simply run the script via a shell : `bash simple-fake-raid.sh`
+You can simply run the script via a shell : `bash simple-fake-raid.bash`
 
 You can also use a cron task like this :
 ```
 # launch @ 05h00 every sunday
-0 5 * * 7 /home/polohb/scripts-raid-backup/simple-fake-raid.sh
+0 5 * * 7 /home/polohb/scripts-raid-backup/src/main/simple-fake-raid.bash
 ```
 
 
