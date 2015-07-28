@@ -140,7 +140,7 @@ fn_prepare_env() {
 
 main() {
 
-  if [[ "$1" -nq "--prepare" ]]; then
+  if [[ "$1" -ne "--prepare" ]]; then
 
     fn_prepare_env
 
