@@ -8,6 +8,13 @@
 # Source funtions
 . ../main/functions.bash
 
+
+
+testRsyncPresent(){
+    assertTrue "Failed : rsync must be installed (not in /usr/bin/rsync)" "[ -e '/usr/bin/rsync' ]"
+}
+
+
 test_SyncFolder_Fail_NoParam(){
   # Fail test if no argument
   sync_folder > /dev/null 2>&1
@@ -60,6 +67,7 @@ test_SyncFolder_Success_NoDiff(){
   # delete created files
   rm -rf tmp1 tmp2 log
 }
+
 
 #TODO testMailLog
 
