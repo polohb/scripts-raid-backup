@@ -11,7 +11,7 @@
 
 
 testRsyncPresent(){
-    assertTrue "Failed : rsync must be installed (not in /usr/bin/rsync)" "[ -e '/usr/bin/rsync' ]"
+    assertTrue "Failed : rsync must be installed (/usr/bin/rsync not found)" "[ -e '/usr/bin/rsync' ]"
 }
 
 
@@ -28,7 +28,7 @@ test_SyncFolder_Fail_1stParamNotAFolder(){
 
   sync_folder toto /tmp/ tata > /dev/null 2>&1
   returnCode=$?
-  assertEquals "Script should fail when 1st params is not a folder" 1 $returnCode
+  assertEquals "1st params is not a folder" 1 $returnCode
 
   # delete created files
   rm toto tata
@@ -62,7 +62,7 @@ test_SyncFolder_Success_NoDiff(){
   sync_folder tmp1 tmp2 log > /dev/null #2>&1
   diff tmp1 tmp2
   local returnCode=$?
-  assertEquals "Source and Dest shloud equals" 0 $returnCode
+  assertEquals "Source and Dest should be equals" 0 $returnCode
 
   # delete created files
   rm -rf tmp1 tmp2 log
