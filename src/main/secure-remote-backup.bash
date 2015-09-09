@@ -104,7 +104,6 @@ fn_backup_folder() {
 fn_check_env() {
   # Run as root, of course.
   if [[ "$UID" -ne "$ROOT_UID" ]]; then
-  then
     echo "Need to be root to run this script."
     exit 1
   fi
@@ -122,7 +121,7 @@ fn_check_env() {
   fi
 
   # Purge virtual directory if exists
-  if [[ -d "$VIRTUAL_ENCRYPTED_FOLDER" ]; then
+  if [[ -d "$VIRTUAL_ENCRYPTED_FOLDER" ]]; then
     unmount_encrypted_folder
   else
     mkdir $VIRTUAL_ENCRYPTED_FOLDER
